@@ -17,31 +17,31 @@ class CompanyControllerClass {
     } 
 
     create(req, res) {
-        if( isUserLogged(req) ){
+       
             res.render('admin/company/form.handlebars', {layout: adminLayout })
-        }else{
-            return res.redirect('/admin/auth')
         }
-    }
+    
 
     save(req, res) {
-        if( isUserLogged(req) ){
-            var result = req.body;
-            console.log(result.name)
-            if(result && result.name){
-                CompanyModel.save(result, function (err)
+        
+            var input = req.body;
+            const file = req.file
+            if (file) {
+                input.logo = file.path.replace("src/public/", "");
+            }
+            console.log(input)
+            if(input && input.name){
+                CompanyModel.save(input, function (err)
                 {
                     if (err) {
-                        alert ('loi nhap du lieu');
+                        console.log(input)
                     }
                     return res.redirect("/admin/companies/")
                 })
             }
-        }else{
-            return res.redirect('/admin/auth')
         }
        
-     }
+     
 
     delete(req, res) {
         const {id} = req.params;
@@ -67,11 +67,17 @@ class CompanyControllerClass {
 
     }
 
+
     saveUpdate (req, res){
         const {id} = req.params;
-        CompanyModel.saveUpdate(id, req.body , function(err){
+        const file = req.file
+        var input = req.body
+        if (file) {
+            input.logo = file.path.replace("src/public/", "");
+        }
+        CompanyModel.saveUpdate(id, input , function(err){
             if (err) {
-                alert ('co loi');
+                console.log(err)
             }
             return res.redirect("/admin/companies/")
         })

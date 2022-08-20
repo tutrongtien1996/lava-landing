@@ -13,9 +13,6 @@ async function generateUsers() {
 
         user.password = md5(user.password);
         UserModel.save(user, function (err, res) { console.log("Insert successful")})
-        // const salt = await bcrypt.genSalt(10);
-        // user.password =  await bcrypt.hash(user.password, salt);
-        // UserModel.save(user, function (err, res) { console.log("Insert successful")})
     });
     
 }

@@ -12,14 +12,16 @@ const app = express();
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 600000000, expires: new Date(Date.now() + (30 * 86400 * 1000)) },
+    maxAge: Date.now() + (30 * 86400 * 1000),
+    expires: new Date(Date.now() + (30 * 86400 * 1000)),
     resave: false,
     rolling: false,
     saveUninitialized: true
 }))
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: true}));
 app.engine('handlebars', exphbs.engine({
     defaultLayout: __dirname+'/views/layouts/main'
 }));

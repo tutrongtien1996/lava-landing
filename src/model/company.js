@@ -9,7 +9,7 @@ class Company {
     updated_at
 
     toSelectedFile() {
-        return "id, name, email, phone_number, address, created_at";
+        return "id, name, logo, email, phone_number, address, created_at";
     }
 
     getList(callback) {
@@ -17,8 +17,20 @@ class Company {
         mysqlConnection.query(query, callback)
     }
 
-    save(result, callback){
-        var query = `INSERT INTO companies (name, address, phone_number, email) VALUES ('${result.name}', '${result.address}', '${result.phone_number}', '${result.email}')`
+    save(input, callback){
+        var query = "";
+        var valueInput = "";
+        for (const field in input) {
+            if (query !== "") {
+                query += " ,"
+                valueInput += " ,"
+            }
+            query += `${field}`;
+            valueInput = valueInput + `'${input[field]}'`
+        }
+        query = `INSERT INTO companies (${query}) VALUES (${valueInput})`
+        console.log(query);
+        // var query = `INSERT INTO companies (name, address, phone_number, email) VALUES ('${result.name}', '${result.address}', '${result.phone_number}', '${result.email}')`
         mysqlConnection.query(query, callback)
     }
 
@@ -33,8 +45,15 @@ class Company {
         mysqlConnection.query(query, callback)
     }
     
-    saveUpdate(id, result, callback){
-        var query = ` UPDATE  companies SET name = '${result.name}', email = '${result.address}', phone_number = '${result.phone_number}', address = '${result.email}' WHERE id = ${id}`;
+    saveUpdate(id, input, callback){
+        var query = "";
+        for (const field in input) {
+            if (query !== "") {
+                query += " ,"
+            }
+            query +=` ${field}='${input[field]}'`
+        }
+        query = `UPDATE  companies SET ${query} WHERE id = ${id}`
         mysqlConnection.query(query, callback)
     }
 

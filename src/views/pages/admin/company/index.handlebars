@@ -38,6 +38,7 @@
                     <table id="recent-purchases-listing" class="table">
                       <thead>
                         <tr>
+                            <th>Logo</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone number</th>
@@ -48,6 +49,7 @@
                       <tbody>
                          {{#each companies}}
                         <tr>
+                          <td><img src="http://localhost:3001/{{this.logo}}" width="80" height="80"></td>
                           <td>{{this.name}}</td>
                           <td>{{this.email}}</td>
                           <td>{{this.phone_number}}</td>
